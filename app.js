@@ -54,3 +54,5 @@ app.get("/", (req, res) => {
 
 app.use(errHandler);
 
+export default app;
+
