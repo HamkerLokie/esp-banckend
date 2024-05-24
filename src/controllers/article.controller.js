@@ -4,8 +4,6 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import axios from "axios";
 import { ApiError } from "../utils/ApiError.js";
 import { mailReceived } from "./mail.controller.js";
-import redisClient from "../redis/index.js";
-import { REDIS_EXPIRATION } from "../config/index.js";
 
 const postArticle = asyncHandler(async (req, res) => {
   const {
@@ -43,9 +41,6 @@ const postArticle = asyncHandler(async (req, res) => {
     userImage,
   });
 
-  const redisKey = `article_${article._id}`;
-
-  redisClient.setEx(redisKey, REDIS_EXPIRATION, JSON.stringify(article));
 
   // Verification
   const mailResponse = await mailReceived(email, fullName, title);
@@ -69,16 +64,6 @@ const getAllArticles = asyncHandler(async (req, res) => {
 });
 
 const getSingleArticle = asyncHandler(async (req, res) => {
-  const cached_article = await redisClient.get(
-    `article_${req.params.articleId}`
-  );
-  const parsed_article = JSON.parse(cached_article);
-  
-  if (parsed_article?.isVerified === true) {
-    return res
-      .status(200)
-      .json(new ApiResponse(200, [parsed_article], "Read Full Article!!"));
-  }
 
   const article = await Article.find({
     _id: req.params.articleId,

@@ -10,8 +10,8 @@
   "author": "Lokendra Kumar",
   "license": "ISC",
   "scripts": {
-    "dev": "nodemon -r dotenv/config --experimental-json-modules app.js",
-    "start": "node -r dotenv/config --experimental-json-modules app.js",
+    "dev": "nodemon -r dotenv/config --experimental-json-modules src/index.js",
+    "start": "node -r dotenv/config --experimental-json-modules src/index.js",
     "build": "npm run build",
     "vercel-build": "echo hello"
   },
